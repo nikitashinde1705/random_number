@@ -1,217 +1,248 @@
-<!-- <!DOCTYPE html>
-<html>
-<head>
-    <title>Q.1: Number Printing Logic </title>
-    <style>
-        body { font-family: Arial; padding: 20px; }
-        #output { 
-            margin-top: 20px; 
-            padding: 10px; 
-            border: 1px solid #ccc;
-            min-height: 200px;
-            white-space: normal;
-            line-height: 25px;
-        }
-        input, button {
-            padding: 8px;
-            font-size: 16px;
-        }
-    </style>
-</head>
-<body>
-
-<h2>Smart Number Printer (1 to 100)</h2>
-
-<input type="number" id="jumpTo" placeholder="Enter number like 92" />
-<button id="goBtn">Go</button>
-
-<div id="output"></div>
-
-<script>
-    let current = 1;               // Current number printing normally
-    let timer = null;              // Interval timer reference
-    let isJumping = false;         // Check when Go button is clicked
-
-    const output = document.getElementById("output");
-    const goBtn = document.getElementById("goBtn");
-
-    // Start normal printing 1 to 100
-    function startPrinting() {
-        timer = setInterval(() => {
-            if (!isJumping) {            // Only print normally if user has not clicked Go
-                printNumber(current);
-                current++;
-
-                if (current > 100) {
-                    clearInterval(timer);  // Stop after 100
-                }
-            }
-        }, 1000); // printing speed (300ms)
-    }
-
-    // Print number to UI
-    function printNumber(num) {
-        output.innerHTML += num + " ";
-    }
-
-    // When user clicks Go
-    goBtn.addEventListener("click", () => {
-        const jumpValue = Number(document.getElementById("jumpTo").value);
-
-        if (!jumpValue || jumpValue < 1 || jumpValue > 100) {
-            alert("Enter number between 1 to 100");
-            return;
-        }
-
-        // Stop the normal printing
-        isJumping = true;
-
-        clearInterval(timer);
-
-        // First: Print from jumpValue to 100
-        let j = jumpValue;
-
-        function printJumpNumbers() {
-            if (j <= 100) {
-                printNumber(j);
-                j++;
-                setTimeout(printJumpNumbers, 400);
-            } else {
-                // After reaching 100 → print remaining numbers
-                printRemainingNumbers();
-            }
-        }
-
-        printJumpNumbers();
-    });
-
-    // Print remaining numbers (the ones missed)
-    function printRemainingNumbers() {
-        let r = current;   // current stopped point (ex: 6)
-
-        function printRemaining() {
-            if (r < jumpTo.value) {
-                printNumber(r);
-                r++;
-                setTimeout(printRemaining, 400);
-            }
-        }
-
-        printRemaining();
-    }
-
-    // Start auto printing
-    startPrinting();
-</script>
-
-</body>
-</html> -->
-
-
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Q.1: Number Printing Logic </title>
-    <style>
-        body { font-family: Arial; padding: 20px; }
-        #output { 
-            margin-top: 20px; 
-            padding: 10px; 
-            border: 1px solid #ccc;
-            min-height: 200px;
-            white-space: normal;
-            line-height: 25px;
-        }
-        input, button {
-            padding: 8px;
-            font-size: 16px;
-        }
-    </style>
+  <meta charset="utf-8" />
+  <title>Smart Number Printer</title>
+
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: "Poppins", sans-serif;
+      background: #f5f6fa;
+      padding: 40px 0;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+    }
+
+    .container {
+      width: 540px;
+      background: white;
+      padding: 30px;
+      border-radius: 18px;
+      box-shadow: 0 12px 40px rgba(0,0,0,0.08);
+      animation: fadeIn 0.6s ease;
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
+      font-weight: 600;
+      color: #222;
+    }
+
+    .controls {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+
+    input {
+      flex: 1;
+      padding: 12px 14px;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      font-size: 16px;
+      outline: none;
+      transition: 0.2s;
+    }
+
+    input:focus {
+      border-color: #4a77f3;
+      box-shadow: 0 0 6px rgba(74,119,243,0.3);
+    }
+
+    button {
+      padding: 12px 18px;
+      font-size: 15px;
+      border: none;
+      cursor: pointer;
+      border-radius: 10px;
+      font-weight: 500;
+      transition: 0.2s;
+    }
+
+    #goBtn {
+      background: #4a77f3;
+      color: white;
+    }
+
+    #goBtn:hover {
+      background: #325fe0;
+    }
+
+    #clearBtn {
+      background: #f44336;
+      color: white;
+    }
+
+    #clearBtn:hover {
+      background: #d9362b;
+    }
+
+    #outputBox {
+      margin-top: 15px;
+      background: #fafafa;
+      padding: 18px;
+      height: 280px;
+      overflow-y: auto;
+      border-radius: 12px;
+      border: 1px solid #ddd;
+      font-size: 18px;
+      line-height: 30px;
+      color: #333;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
 </head>
+
 <body>
 
-<h2>Smart Number Printer (1 to 100)</h2>
+<div class="container">
+  <h2>Smart Number Printer</h2>
 
-<input type="number" id="jumpTo" placeholder="Enter number like 92" />
-<button id="goBtn">Go</button>
+  <div class="controls">
+    <input id="jumpInput" type="number" placeholder="Enter number (1-100)">
+    <button id="goBtn">Go</button>
+    <button id="clearBtn">Clear</button>
+  </div>
 
-<div id="output"></div>
+  <div id="outputBox"></div>
+</div>
 
 <script>
-    let current = 1;               // Current number printing normally
-    let timer = null;              // Interval timer reference
-    let isJumping = false;         // Check when Go button is clicked
+(function() {
 
-    const output = document.getElementById("output");
-    const goBtn = document.getElementById("goBtn");
+  const MAX = 100;
+  const normalDelay = 700; 
+  const jumpDelay = 500;
 
-    // Start normal printing 1 to 100
-    function startPrinting() {
-        timer = setInterval(() => {
-            if (!isJumping) {            // Only print normally if user has not clicked Go
-                printNumber(current);
-                current++;
+  const outputEl = document.getElementById('outputBox');
+  const goBtn = document.getElementById('goBtn');
+  const clearBtn = document.getElementById('clearBtn');
+  const jumpInput = document.getElementById('jumpInput');
 
-                if (current > 100) {
-                    clearInterval(timer);  // Stop after 100
-                }
-            }
-        }, 1000); // printing speed (300ms)
+  let ranges = [{ s: 1, e: MAX }];
+  let nextJump = null;
+  let stopped = false;
+
+  function findRangeIndexContaining(val) {
+    return ranges.findIndex(r => val >= r.s && val <= r.e);
+  }
+
+  function markPrintedNumber(n) {
+    for (let i = 0; i < ranges.length; i++) {
+      const r = ranges[i];
+      if (n < r.s || n > r.e) continue;
+
+      const leftS = r.s, leftE = n - 1;
+      const rightS = n + 1, rightE = r.e;
+
+      ranges.splice(i, 1);
+
+      if (rightS <= rightE) {
+        ranges.splice(i, 0, { s: rightS, e: rightE });
+        i++;
+      }
+      if (leftS <= leftE) {
+        ranges.splice(i, 0, { s: leftS, e: leftE });
+      }
+      return;
+    }
+  }
+
+  function printNumber(n) {
+    outputEl.textContent += n + " ";
+    outputEl.scrollTop = outputEl.scrollHeight;
+  }
+
+  function printBlockInterruptible(startN, endN, perDelay, onComplete) {
+    let n = startN;
+
+    function step() {
+      if (nextJump !== null) {
+        if (findRangeIndexContaining(nextJump) !== -1) {
+          return scheduleEngineStep();
+        } else {
+          nextJump = null;
+        }
+      }
+
+      if (n > endN) return setTimeout(() => onComplete && onComplete(), 0);
+
+      if (findRangeIndexContaining(n) === -1) {
+        n++;
+        return setTimeout(step, 0);
+      }
+
+      printNumber(n);
+      markPrintedNumber(n);
+      n++;
+
+      setTimeout(step, perDelay);
+    }
+    setTimeout(step, 0);
+  }
+
+  function scheduleEngineStep() { setTimeout(engineStep, 0); }
+
+  function engineStep() {
+    if (stopped) return;
+    if (ranges.length === 0) { stopped = true; return; }
+
+    if (nextJump !== null) {
+      const j = nextJump;
+      const idx = findRangeIndexContaining(j);
+      nextJump = null;
+
+      if (idx === -1) return scheduleEngineStep();
+
+      const { e } = ranges[idx];
+
+      return printBlockInterruptible(j, e, jumpDelay, () => {
+        scheduleEngineStep();
+      });
     }
 
-    // Print number to UI
-    function printNumber(num) {
-        output.innerHTML += num + " ";
-    }
-
-    // When user clicks Go
-    goBtn.addEventListener("click", () => {
-        const jumpValue = Number(document.getElementById("jumpTo").value);
-
-        if (!jumpValue || jumpValue < 1 || jumpValue > 100) {
-            alert("Enter number between 1 to 100");
-            return;
-        }
-
-        // Stop the normal printing
-        isJumping = true;
-
-        clearInterval(timer);
-
-        // First: Print from jumpValue to 100
-        let j = jumpValue;
-
-        function printJumpNumbers() {
-            if (j <= 100) {
-                printNumber(j);
-                j++;
-                setTimeout(printJumpNumbers, 200);
-            } else {
-                // After reaching 100 → print remaining numbers
-                printRemainingNumbers();
-            }
-        }
-
-        printJumpNumbers();
+    const r = ranges[0];
+    printBlockInterruptible(r.s, r.e, normalDelay, () => {
+      scheduleEngineStep();
     });
+  }
 
-    // Print remaining numbers (the ones missed)
-    function printRemainingNumbers() {
-        let r = current;   // current stopped point (ex: 6)
-
-        function printRemaining() {
-            if (r < jumpTo.value) {
-                printNumber(r);
-                r++;
-                setTimeout(printRemaining, 200);
-            }
-        }
-
-        printRemaining();
+  goBtn.addEventListener('click', () => {
+    const v = Number(jumpInput.value);
+    if (!Number.isInteger(v) || v < 1 || v > MAX) {
+      alert("Enter a number between 1 and 100.");
+      return;
     }
+    if (findRangeIndexContaining(v) === -1) {
+      alert("This number is already printed. Try another.");
+      return;
+    }
+    nextJump = v;
+  });
 
-    // Start auto printing
-    startPrinting();
+  clearBtn.addEventListener('click', () => {
+    ranges = [{ s: 1, e: MAX }];
+    nextJump = null;
+    stopped = false;
+    outputEl.textContent = "";
+    scheduleEngineStep();
+  });
+
+  scheduleEngineStep();
+
+})();
 </script>
 
 </body>
